@@ -171,7 +171,8 @@ class MainProgram:
         print("3. Update Stock")
         print("4. Search Product")
         print("5. Save Inventory")
-        print("6. Exit")
+        print("6. Calculate Shipping Cost")
+        print("7. Exit")
 
     def handle_display_all(self):
         print("\nCurrent Inventory")
@@ -363,6 +364,20 @@ class MainProgram:
         print("Saving inventory...")
         print(f"Inventory saved successfully to {self.file_name}\n")
 
+    def handle_calculate_shipping(self):
+        search_term = input("Enter Physical Product ID or Name to calculate shipping: ").strip()
+        found_items = self.inventory.search_product_by_term(search_term)
+
+        if found_items:
+            product = found_items[0]
+            if isinstance(product, CanBeShipped):
+                cost = product.calculate_shipping_cost()
+                print(f"\nShipping cost for {product.get_name()}: ${cost:.2f}")
+            else:
+                print(f"\n{product.get_name()} is a digital product and cannot be shipped.")
+        else:
+            print("\nProduct not found.")
+
     def run(self):
         self.display_welcome()
 
@@ -381,12 +396,14 @@ class MainProgram:
             elif choice == "5":
                 self.handle_save_inventory()
             elif choice == "6":
+                self.handle_calculate_shipping()
+            elif choice == "7":
                 self.handle_save_inventory()
                 print("Thank you for using Inventory Management System.")
                 print("Program terminated.")
                 break
             else:
-                print("Invalid choice. Please select from 1 to 6.")
+                print("Invalid choice. Please select from 1 to 7.") 
 
 class FileHandling:
     """Loads inventory data from JSON and saves inventory data to JSON."""
