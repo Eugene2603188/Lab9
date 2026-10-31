@@ -96,6 +96,23 @@ class PhysicalProduct(Product, CanBeShipped):
         """Shipping cost: base fee plus rate per kg."""
         return 5.00 + self.get_weight() * 2.00
 
+class SubscriptionProduct(Product):
+    """A product delivered as a recurring subscription (Optional Task 8)."""
+
+    def __init__(self, product_id, name, price, quantity, duration_months):
+        super().__init__(product_id, name, price, quantity)
+        self.__duration_months = duration_months
+
+    def get_duration_months(self):
+        return self.__duration_months
+
+    def get_fulfilment_info(self):
+        return f"Subscription service. Duration: {self.__duration_months} months"
+    
+    def get_info_string(self):
+        return (super().get_info_string() +
+                f" | Type: {'Sub':<8} | Duration: {self.get_duration_months():>3} mos")
+
 class Inventory:
     """Manages a collection of products in the inventory."""
     
@@ -238,10 +255,11 @@ class MainProgram:
             print("\nProduct type:")
             print("1. Physical")
             print("2. Digital")
-            product_type = input("Choose type (1 or 2): ").strip()
-            if product_type in ["1", "2"]:
+            print("3. Subscription")
+            product_type = input("Choose type (1, 2, or 3): ").strip()
+            if product_type in ["1", "2", "3"]:
                 break
-            print("Invalid choice. Enter 1 or 2.")
+            print("Invalid choice. Enter 1, 2, or 3.")
 
         # INPUT 5: Extra field depends on type
         if product_type == "1":
@@ -254,7 +272,7 @@ class MainProgram:
                     break
                 except ValueError:
                     print("Invalid input. Please enter a number.")
-        else:
+        elif product_type == "2":
             while True:
                 try:
                     download_size = float(input("Download size (MB): ").strip())
@@ -264,6 +282,16 @@ class MainProgram:
                     break
                 except ValueError:
                     print("Invalid input. Please enter a number.")
+        else:
+            while True:
+                try:
+                    duration_months = int(input("Duration (months): ").strip())
+                    if duration_months <= 0:
+                        print("Duration must be greater than 0.")
+                        continue
+                    break
+                except ValueError:
+                    print("Invalid input. Please enter an integer number.")
 
         # INPUT 6: Get and validate Stock Quantity - must be number, check 500 limit
         while True:
@@ -298,8 +326,10 @@ class MainProgram:
             # Create the matching subclass object and pass it to Inventory
             if product_type == "1":
                 product = PhysicalProduct(product_id, product_name, price, valid_quantity, weight)
-            else:
+            elif product_type == "2":
                 product = DigitalProduct(product_id, product_name, price, valid_quantity, download_size)
+            else:
+                product = SubscriptionProduct(product_id, product_name, price, valid_quantity, duration_months)
             self.inventory.add_product(product)
             print(f"Product P{product_id} added successfully.")
             break
@@ -423,6 +453,9 @@ class FileHandling:
             elif isinstance(product, DigitalProduct):
                 item["type"] = "digital"
                 item["download_size"] = product.get_download_size()
+            elif isinstance(product, SubscriptionProduct):  # <-- ADD THIS BLOCK
+                item["type"] = "subscription"
+                item["duration_months"] = product.get_duration_months()
             data.append(item)
 
         with open(filename, "w") as f:
@@ -436,10 +469,16 @@ class FileHandling:
             return
 
         for item in data:
-            if item.get("type") == "digital":
+            prod_type = item.get("type")
+            if prod_type == "digital":
                 product = DigitalProduct(
                     item.get("product_id", item.get("id")), item["name"], item["price"],
                     item["quantity"], item["download_size"]
+                )
+            elif prod_type == "subscription":  # <-- ADD THIS BLOCK
+                product = SubscriptionProduct(
+                    item.get("product_id", item.get("id")), item["name"], item["price"],
+                    item["quantity"], item["duration_months"]
                 )
             else:
                 product = PhysicalProduct(
@@ -447,7 +486,6 @@ class FileHandling:
                     item["quantity"], item.get("weight", 0)
                 )
             inventory.add_product(product)
-
 
 #---- THE MENU SHIT -----
 if __name__ == "__main__":
