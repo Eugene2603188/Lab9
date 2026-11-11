@@ -34,52 +34,52 @@ class CanBeShipped(ABC):
     """Interface for products that can be shipped."""
 
     @abstractmethod
-    def calculate_shipping_cost(self):
+    def calculate_shipping_cost(self) -> float:
         pass
 
 class Product(ABC):
     """Represents a single product in the inventory."""
 
     @abstractmethod
-    def get_fulfilment_info(self):
+    def get_fulfilment_info(self) -> str:
         pass
     
     def __init__(self, product_id: str, name: str, price: float, quantity: int, supplier: Supplier) -> None:
         """Constructor - initialize a product with its attributes."""
-        self.__product_id = str(product_id)
-        self.__name = name
-        self.__price = price
-        self.__quantity = quantity
+        self.__product_id: str = str(product_id)
+        self.__name: str = name
+        self.__price: float = price
+        self.__quantity: int = quantity
         self.__supplier: Supplier = supplier
     
-    def update_stock(self, new_quantity):
+    def update_stock(self, new_quantity: int) -> None:
         """Update the stock quantity for this product."""
         self.__quantity = new_quantity
 
-    def display_single_line(self):
+    def display_single_line(self) -> None:
         """Display product in single-line format (for inventory list)."""
         print(f"ID: P{self.__product_id} | Name: {self.__name} | Price: ${self.__price:.2f} | Stock: {self.__quantity}")
 
-    def get_info_string(self):
+    def get_info_string(self) -> str:
         return (f"ID: P{self.get_id():<6} | "
                 f"Name: {self.get_name():<15} | "
                 f"Price: ${self.get_price():>8.2f} | "
                 f"Stock: {self.get_quantity():>3}")
 
-    def display_information(self):
+    def display_information(self) -> None:
         print(self.get_info_string())
     
     # Getters (to read private attributes from outside the class)
-    def get_id(self):
+    def get_id(self) -> str:
         return self.__product_id
     
-    def get_name(self):
+    def get_name(self) -> str:
         return self.__name
     
-    def get_price(self):
+    def get_price(self) -> float:
         return self.__price
     
-    def get_quantity(self):
+    def get_quantity(self) -> int:
         return self.__quantity
 
     def get_supplier(self) -> Supplier:
@@ -88,17 +88,17 @@ class Product(ABC):
 class DigitalProduct(Product):
     """A product delivered as a download."""
 
-    def __init__(self, product_id: str, name: str, price: float, quantity: int,download_size: float, supplier: Supplier) -> None:
+    def __init__(self, product_id: str, name: str, price: float, quantity: int, download_size: float, supplier: Supplier) -> None:
         super().__init__(product_id, name, price, quantity, supplier)
-        self.__download_size = download_size
+        self.__download_size: float = download_size
 
-    def get_download_size(self):
+    def get_download_size(self) -> float:
         return self.__download_size
 
-    def get_fulfilment_info(self):
+    def get_fulfilment_info(self) -> str:
         return "Delivered digitally. Download size: " + str(self.__download_size) + " MB"
-    
-    def get_info_string(self):
+
+    def get_info_string(self) -> str:
         return (super().get_info_string() +
                 f" | Type: {'Digital':<8} | Download size: {self.get_download_size():>5} MB")
 
@@ -107,19 +107,19 @@ class PhysicalProduct(Product, CanBeShipped):
 
     def __init__(self, product_id: str, name: str, price: float, quantity: int, weight: float, supplier: Supplier) -> None:
         super().__init__(product_id, name, price, quantity, supplier)
-        self.__weight = weight
+        self.__weight: float = weight
 
-    def get_weight(self):
+    def get_weight(self) -> float:
         return self.__weight
 
-    def get_fulfilment_info(self):
+    def get_fulfilment_info(self) -> str:
         return "Ships to the customer's address."
 
-    def get_info_string(self):
+    def get_info_string(self) -> str:
         return (super().get_info_string() +
                 f" | Type: {'Physical':<8} | Weight: {self.get_weight():>5} kg")
 
-    def calculate_shipping_cost(self):
+    def calculate_shipping_cost(self) -> float:
         """Shipping cost: base fee plus rate per kg."""
         return 5.00 + self.get_weight() * 2.00
 
@@ -128,15 +128,15 @@ class SubscriptionProduct(Product):
 
     def __init__(self, product_id: str, name: str, price: float, quantity: int, duration_months: int, supplier: Supplier) -> None:
         super().__init__(product_id, name, price, quantity, supplier)
-        self.__duration_months = duration_months
+        self.__duration_months: int = duration_months
 
-    def get_duration_months(self):
+    def get_duration_months(self) -> int:
         return self.__duration_months
 
-    def get_fulfilment_info(self):
+    def get_fulfilment_info(self) -> str:
         return f"Subscription service. Duration: {self.__duration_months} months"
-    
-    def get_info_string(self):
+
+    def get_info_string(self) -> str:
         return (super().get_info_string() +
                 f" | Type: {'Sub':<8} | Duration: {self.get_duration_months():>3} mos")
 
@@ -170,10 +170,6 @@ class Inventory:
     def get_total_stock(self) -> int:
         """Return total quantity of all products in inventory."""
         return sum(product.get_quantity() for product in self.__products)
-    
-    def add_product(self, product):
-        """Add a product object (Physical or Digital) to the inventory."""
-        self.__products.append(product)
 
     def search_product_by_term(self, search_term: str) -> list[Product]:
         """Search for products by ID or name. Returns list of matching products."""
@@ -270,13 +266,13 @@ class Order:
 class MainProgram:
     """Displays the menu, gets user input, calls the appropriate Inventory methods."""
 
-    def __init__(self, file_name):
-        self.file_name = file_name
-        self.inventory = Inventory()
-        self.file_handler = FileHandling()
+    def __init__(self, file_name: str) -> None:
+        self.file_name: str = file_name
+        self.inventory: Inventory = Inventory()
+        self.file_handler: FileHandling = FileHandling()
         self.file_handler.load_inventory(file_name, self.inventory)
 
-    def display_welcome(self):
+    def display_welcome(self) -> None:
         print("\n========================================")
         print("\nINVENTORY MANAGER SYSTEM")
         print("\n========================================")
@@ -288,7 +284,7 @@ class MainProgram:
             print("\ninventory.json not found.")
             print("Starting with an empty inventory.\n")
 
-    def display_menu(self):
+    def display_menu(self) -> None:
         print("\n----------- MENU -----------")
         print("1. Display All Products")
         print("2. Add Product")
@@ -298,13 +294,13 @@ class MainProgram:
         print("6. Calculate Shipping Cost")
         print("7. Exit")
 
-    def handle_display_all(self):
+    def handle_display_all(self) -> None:
         print("\nCurrent Inventory")
         print("------------------------------------------------")
         self.inventory.display_all()
         print("------------------------------------------------")
 
-    def handle_add_product(self):
+    def handle_add_product(self) -> None:
         print("\nAdd New Product")
 
         # INPUT 1: Get and validate Product ID - must be numbers only
@@ -444,7 +440,7 @@ class MainProgram:
             print(f"Product P{product_id} added successfully.")
             break
 
-    def handle_update_stock(self):
+    def handle_update_stock(self) -> None:
         print("\nUpdate Stock")
         search_term = input("Enter Product ID or Name: ").strip()
 
@@ -486,7 +482,7 @@ class MainProgram:
         else:
             print("\nProduct not found.")
 
-    def handle_search_product(self):
+    def handle_search_product(self) -> None:
         search_term = input("Search Product ID: ").strip()
         found_items = self.inventory.search_product_by_term(search_term)
 
@@ -499,12 +495,12 @@ class MainProgram:
         else:
             print("Product not found.\n")
 
-    def handle_save_inventory(self):
+    def handle_save_inventory(self) -> None:
         self.file_handler.save_inventory(self.file_name, self.inventory)
         print("Saving inventory...")
         print(f"Inventory saved successfully to {self.file_name}\n")
 
-    def handle_calculate_shipping(self):
+    def handle_calculate_shipping(self) -> None:
         search_term = input("Enter Physical Product ID or Name to calculate shipping: ").strip()
         found_items = self.inventory.search_product_by_term(search_term)
 
@@ -537,7 +533,7 @@ class MainProgram:
         email = input("Supplier Email: ").strip()
         return Supplier(supplier_id, name, email)
 
-    def run(self):
+    def run(self) -> None:
         self.display_welcome()
 
         while True:
@@ -567,7 +563,7 @@ class MainProgram:
 class FileHandling:
     """Loads inventory data from JSON and saves inventory data to JSON."""
 
-    def save_inventory(self, filename, inventory):
+    def save_inventory(self, filename: str, inventory: Inventory) -> None:
         data = []
         for product in inventory.get_products():
             item = {
@@ -596,7 +592,7 @@ class FileHandling:
         with open(filename, "w") as f:
             json.dump(data, f, indent=4)
 
-    def load_inventory(self, filename, inventory):
+    def load_inventory(self, filename: str, inventory: Inventory) -> None:
         try:
             with open(filename, "r") as f:
                 data = json.load(f)
@@ -608,6 +604,7 @@ class FileHandling:
         for item in data:
             supplier = self._load_supplier(item.get("supplier"), suppliers)
             prod_type = item.get("type")
+            product: Product
             if prod_type == "digital":
                 product = DigitalProduct(
                     item.get("product_id", item.get("id")), item["name"], item["price"],
