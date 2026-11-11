@@ -7,6 +7,28 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 file_name = os.path.join(script_dir, "inventory.json")
 
+class Supplier:
+    """Represents a supplier. Exists independently of any Product (association)."""
+
+    def __init__(self, supplier_id: str, name: str, contact_email: str) -> None:
+        self.__supplier_id: str = str(supplier_id)
+        self.__name: str = name
+        self.__contact_email: str = contact_email
+
+    def get_id(self) -> str:
+        return self.__supplier_id
+
+    def get_name(self) -> str:
+        return self.__name
+
+    def get_contact_email(self) -> str:
+        return self.__contact_email
+
+    def display_information(self) -> None:
+        print(f"Supplier ID: {self.__supplier_id} | "
+              f"Name: {self.__name} | "
+              f"Email: {self.__contact_email}")
+
 class CanBeShipped(ABC):
     """Interface for products that can be shipped."""
 
@@ -164,28 +186,6 @@ class Inventory:
         """Return the list of all products."""
         return self.__products
 
-class Supplier:
-    """Represents a supplier. Exists independently of any Product (association)."""
-
-    def __init__(self, supplier_id: str, name: str, contact_email: str) -> None:
-        self.__supplier_id: str = str(supplier_id)
-        self.__name: str = name
-        self.__contact_email: str = contact_email
-
-    def get_id(self) -> str:
-        return self.__supplier_id
-
-    def get_name(self) -> str:
-        return self.__name
-
-    def get_contact_email(self) -> str:
-        return self.__contact_email
-
-    def display_information(self) -> None:
-        print(f"Supplier ID: {self.__supplier_id} | "
-              f"Name: {self.__name} | "
-              f"Email: {self.__contact_email}")
-
 class MainProgram:
     """Displays the menu, gets user input, calls the appropriate Inventory methods."""
 
@@ -319,6 +319,9 @@ class MainProgram:
                 except ValueError:
                     print("Invalid input. Please enter an integer number.")
 
+        # INPUT 5b: Supplier (created first, then handed to the product)
+        supplier = self.get_supplier_input()
+
         # INPUT 6: Get and validate Stock Quantity - must be number, check 500 limit
         while True:
             qty_input = input("Stock Quantity: ").strip()
@@ -351,11 +354,11 @@ class MainProgram:
 
             # Create the matching subclass object and pass it to Inventory
             if product_type == "1":
-                product = PhysicalProduct(product_id, product_name, price, valid_quantity, weight)
+                product = PhysicalProduct(product_id, product_name, price, valid_quantity, weight, supplier)
             elif product_type == "2":
-                product = DigitalProduct(product_id, product_name, price, valid_quantity, download_size)
+                product = DigitalProduct(product_id, product_name, price, valid_quantity, download_size, supplier)
             else:
-                product = SubscriptionProduct(product_id, product_name, price, valid_quantity, duration_months)
+                product = SubscriptionProduct(product_id, product_name, price, valid_quantity, duration_months, supplier)
             self.inventory.add_product(product)
             print(f"Product P{product_id} added successfully.")
             break
@@ -434,6 +437,25 @@ class MainProgram:
         else:
             print("\nProduct not found.")
 
+    def get_supplier_input(self) -> Supplier:
+        """Reuse an existing supplier by ID, or create a new one."""
+        while True:
+            supplier_id = input("Supplier ID: ").strip()
+            if supplier_id:
+                break
+            print("Supplier ID cannot be empty.")
+
+        for product in self.inventory.get_products():
+            existing = product.get_supplier()
+            if existing.get_id() == supplier_id:
+                print("Existing supplier found:")
+                existing.display_information()
+                return existing
+
+        name = input("Supplier Name: ").strip()
+        email = input("Supplier Email: ").strip()
+        return Supplier(supplier_id, name, email)
+
     def run(self):
         self.display_welcome()
 
@@ -473,6 +495,12 @@ class FileHandling:
                 "price": product.get_price(),
                 "quantity": product.get_quantity(),
             }
+            supplier = product.get_supplier()
+            item["supplier"] = {
+                "supplier_id": supplier.get_id(),
+                "name": supplier.get_name(),
+                "contact_email": supplier.get_contact_email(),
+            }
             if isinstance(product, PhysicalProduct):
                 item["type"] = "physical"
                 item["weight"] = product.get_weight()
@@ -494,24 +522,41 @@ class FileHandling:
         except FileNotFoundError:
             return
 
+        suppliers: dict[str, Supplier] = {}
+
         for item in data:
+            supplier = self._load_supplier(item.get("supplier"), suppliers)
             prod_type = item.get("type")
             if prod_type == "digital":
                 product = DigitalProduct(
                     item.get("product_id", item.get("id")), item["name"], item["price"],
-                    item["quantity"], item["download_size"]
+                    item["quantity"], item["download_size"], supplier
                 )
-            elif prod_type == "subscription":  # <-- ADD THIS BLOCK
+            elif prod_type == "subscription":
                 product = SubscriptionProduct(
                     item.get("product_id", item.get("id")), item["name"], item["price"],
-                    item["quantity"], item["duration_months"]
+                    item["quantity"], item["duration_months"], supplier
                 )
             else:
                 product = PhysicalProduct(
                     item.get("product_id", item.get("id")), item["name"], item["price"],
-                    item["quantity"], item.get("weight", 0)
+                    item["quantity"], item.get("weight", 0), supplier
                 )
             inventory.add_product(product)
+
+    def _load_supplier(self, supplier_data: dict | None,
+                       suppliers: dict[str, Supplier]) -> Supplier:
+        """Reuse one Supplier object per supplier_id."""
+        if supplier_data is None:   # old JSON without supplier info
+            supplier_data = {"supplier_id": "S000",
+                             "name": "Unknown Supplier",
+                             "contact_email": "unknown@example.com"}
+        supplier_id = supplier_data["supplier_id"]
+        if supplier_id not in suppliers:
+            suppliers[supplier_id] = Supplier(supplier_id,
+                                              supplier_data["name"],
+                                              supplier_data["contact_email"])
+        return suppliers[supplier_id]
 
 #---- THE MENU SHIT -----
 if __name__ == "__main__":
