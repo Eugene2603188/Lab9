@@ -141,13 +141,33 @@ class SubscriptionProduct(Product):
                 f" | Type: {'Sub':<8} | Duration: {self.get_duration_months():>3} mos")
 
 class Inventory:
-    """Manages a collection of products in the inventory."""
-    
-    def __init__(self):
-        """Constructor - initialize an empty product list."""
-        self.__products = []
+    """Manages a collection of products in the inventory (aggregation)."""
 
-    def get_total_stock(self):
+    def __init__(self) -> None:
+        """Constructor - initialize an empty product list."""
+        self.__products: list[Product] = []
+
+    def add_product(self, product: Product) -> None:
+        """Add an existing Product object (Physical, Digital or Subscription)."""
+        self.__products.append(product)
+
+    def find_product(self, product_id: str) -> Product | None:
+        """Return the product with this exact ID, or None if not found."""
+        for product in self.__products:
+            if product.get_id() == str(product_id):
+                return product
+        return None
+
+    def remove_product(self, product_id: str) -> bool:
+        """Remove the matching Product reference. The Product itself is not destroyed.
+        Returns True if a product was removed."""
+        product = self.find_product(product_id)
+        if product is None:
+            return False
+        self.__products.remove(product)
+        return True
+
+    def get_total_stock(self) -> int:
         """Return total quantity of all products in inventory."""
         return sum(product.get_quantity() for product in self.__products)
     
@@ -155,7 +175,7 @@ class Inventory:
         """Add a product object (Physical or Digital) to the inventory."""
         self.__products.append(product)
 
-    def search_product_by_term(self, search_term):
+    def search_product_by_term(self, search_term: str) -> list[Product]:
         """Search for products by ID or name. Returns list of matching products."""
         found_items = []
         clean_term = search_term.lstrip("Pp").strip()
@@ -167,7 +187,7 @@ class Inventory:
         
         return found_items
 
-    def update_product_stock(self, search_term, new_quantity):
+    def update_product_stock(self, search_term: str, new_quantity: int) -> bool:
         """Update stock for a product by ID or name. Returns True if successful."""
         clean_term = search_term.lstrip("Pp").strip()
         
@@ -179,11 +199,11 @@ class Inventory:
         
         return False
     
-    def display_all(self):
+    def display_all(self) -> None:
         for product in self.__products:   # use your actual list name
             product.display_information()
     
-    def get_products(self):
+    def get_products(self) -> list[Product]:
         """Return the list of all products."""
         return self.__products
 
