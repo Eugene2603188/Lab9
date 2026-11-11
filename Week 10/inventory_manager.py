@@ -21,12 +21,13 @@ class Product(ABC):
     def get_fulfilment_info(self):
         pass
     
-    def __init__(self, product_id, name, price, quantity):
+    def __init__(self, product_id: str, name: str, price: float, quantity: int, supplier: Supplier) -> None:
         """Constructor - initialize a product with its attributes."""
         self.__product_id = str(product_id)
         self.__name = name
         self.__price = price
         self.__quantity = quantity
+        self.__supplier: Supplier = supplier
     
     def update_stock(self, new_quantity):
         """Update the stock quantity for this product."""
@@ -58,11 +59,14 @@ class Product(ABC):
     def get_quantity(self):
         return self.__quantity
 
+    def get_supplier(self) -> Supplier:
+        return self.__supplier
+
 class DigitalProduct(Product):
     """A product delivered as a download."""
 
-    def __init__(self, product_id, name, price, quantity, download_size):
-        super().__init__(product_id, name, price, quantity)
+    def __init__(self, product_id: str, name: str, price: float, quantity: int,download_size: float, supplier: Supplier) -> None:
+        super().__init__(product_id, name, price, quantity, supplier)
         self.__download_size = download_size
 
     def get_download_size(self):
@@ -78,8 +82,8 @@ class DigitalProduct(Product):
 class PhysicalProduct(Product, CanBeShipped):
     """A product that is shipped to the customer."""
 
-    def __init__(self, product_id, name, price, quantity, weight):
-        super().__init__(product_id, name, price, quantity)
+    def __init__(self, product_id: str, name: str, price: float, quantity: int, weight: float, supplier: Supplier) -> None:
+        super().__init__(product_id, name, price, quantity, supplier)
         self.__weight = weight
 
     def get_weight(self):
