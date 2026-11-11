@@ -1,6 +1,5 @@
 from __future__ import annotations
-from inventory_manager import Product, PhysicalProduct, DigitalProduct, CanBeShipped, Supplier, Inventory, Order, OrderLine
-
+from inventory_manager import Product, PhysicalProduct, DigitalProduct, SubscriptionProduct, CanBeShipped, Supplier, Inventory, Order, OrderLine
 def check(label, condition):
     print(("PASS" if condition else "FAIL") + ": " + label)
     return condition
@@ -199,3 +198,27 @@ print("display_all():")
 lsp_inventory.display_all()
 
 # The expectation Product sets: update_stock(n) makes get_quantity() return
+
+# ----- TEST POLYMORPHISM -----
+print("\n----- TEST POLYMORPHISM -----")
+poly_results = []
+
+poly_supplier = Supplier("S006", "Golf Traders", "hi@golf.com")
+poly_inventory = Inventory()
+poly_inventory.add_product(PhysicalProduct("50", "Poly Keyboard", 30.0, 5, 1.0, poly_supplier))
+poly_inventory.add_product(DigitalProduct("51", "Poly Ebook", 10.0, 5, 2.0, poly_supplier))
+poly_inventory.add_product(SubscriptionProduct("52", "Poly Cloud", 5.0, 5, 12, poly_supplier))
+
+# ONE loop over the Product collection, no isinstance()
+fulfilment_messages = []
+for product in poly_inventory.get_products():
+    product.display_information()
+    message = product.get_fulfilment_info()
+    print(message)
+    fulfilment_messages.append(message)
+
+poly_results.append(check("All 3 product types are stored in the same Inventory", len(poly_inventory.get_products()) == 3))
+poly_results.append(check("Every product returned a fulfilment message", all(isinstance(m, str) and m != "" for m in fulfilment_messages)))
+poly_results.append(check("Each subclass gave its own, different message", len(set(fulfilment_messages)) == 3))
+
+print(f"{sum(poly_results)} of {len(poly_results)} checks passed")
