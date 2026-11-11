@@ -103,8 +103,8 @@ class PhysicalProduct(Product, CanBeShipped):
 class SubscriptionProduct(Product):
     """A product delivered as a recurring subscription (Optional Task 8)."""
 
-    def __init__(self, product_id, name, price, quantity, duration_months):
-        super().__init__(product_id, name, price, quantity)
+    def __init__(self, product_id: str, name: str, price: float, quantity: int, duration_months: int, supplier: Supplier) -> None:
+        super().__init__(product_id, name, price, quantity, supplier)
         self.__duration_months = duration_months
 
     def get_duration_months(self):
