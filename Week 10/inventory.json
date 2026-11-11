@@ -1,0 +1,74 @@
+[
+    {
+        "product_id": "001",
+        "name": "Wireless Mouse",
+        "price": 9.99,
+        "quantity": 3,
+        "type": "physical",
+        "weight": 0.5
+    },
+    {
+        "product_id": "002",
+        "name": "Keyboard",
+        "price": 29.99,
+        "quantity": 50,
+        "type": "physical",
+        "weight": 1.0
+    },
+    {
+        "product_id": "003",
+        "name": "USB Cable",
+        "price": 4.99,
+        "quantity": 3,
+        "type": "physical",
+        "weight": 0.2
+    },
+    {
+        "product_id": "004",
+        "name": "Monitor",
+        "price": 299.99,
+        "quantity": 10,
+        "type": "physical",
+        "weight": 2.7
+    },
+    {
+        "product_id": "005",
+        "name": "Desk",
+        "price": 120.0,
+        "quantity": 3,
+        "type": "physical",
+        "weight": 12.0
+    },
+    {
+        "product_id": "006",
+        "name": "e-book",
+        "price": 9.99,
+        "quantity": 10,
+        "type": "digital",
+        "download_size": 2.0
+    },
+    {
+        "product_id": "007",
+        "name": "Desk Lamp",
+        "price": 24.5,
+        "quantity": 4,
+        "type": "physical",
+        "weight": 1.5
+    },
+    {
+        "product_id": "008",
+        "name": "Music Album",
+        "price": 9.99,
+        "quantity": 10,
+        "type": "digital",
+        "download_size": 35.0
+    },
+    {
+        "product_id": "303",
+        "name": "Cloud",
+        "price": 4.9,
+        "quantity": 100,
+        "type": "subscription",
+        "duration_months": 12
+    }
+]
