@@ -1,5 +1,5 @@
 from __future__ import annotations
-from inventory_manager import Product, PhysicalProduct, DigitalProduct, CanBeShipped, Supplier
+from inventory_manager import Product, PhysicalProduct, DigitalProduct, CanBeShipped, Supplier, Inventory
 
 def check(label, condition):
     print(("PASS" if condition else "FAIL") + ": " + label)
@@ -81,6 +81,49 @@ del assoc_supplier
 print("\nAfter 'del assoc_supplier':")
 association_results.append(check("Product can still display its supplier info", assoc_physical.get_supplier().get_name() == "Acme Parts"))
 assoc_physical.get_supplier().display_information()
-
-print(f"{sum(association_results)} of {len(association_results)} checks passed")
 print(f"{sum(fulfilment_results)} of {len(fulfilment_results)} checks passed")
+
+# ----- TEST AGGREGATION (INVENTORY AND PRODUCT) -----
+print("\n----- TEST AGGREGATION (INVENTORY AND PRODUCT) -----")
+aggregation_results = []
+
+agg_supplier = Supplier("S003", "Delta Goods", "hello@delta.com")
+agg_product = PhysicalProduct("20", "Test", 5.0, 2, 1.0, agg_supplier)   # created BEFORE any inventory
+
+inventory_a = Inventory()
+inventory_b = Inventory()
+
+# Add to Inventory A
+inventory_a.add_product(agg_product)
+aggregation_results.append(check("Inventory A finds the product after adding",
+                                 inventory_a.find_product("20") is agg_product))
+
+# Remove from Inventory A
+removed = inventory_a.remove_product("20")
+aggregation_results.append(check("remove_product() reports success", removed is True))
+aggregation_results.append(check("Inventory A no longer contains the product",
+                                 inventory_a.find_product("20") is None))
+aggregation_results.append(check("Removing a missing product returns False",
+                                 inventory_a.remove_product("20") is False))
+
+# Product still works after removal
+print("Product after removal from Inventory A:")
+agg_product.display_information()
+aggregation_results.append(check("Product is still usable after removal",
+                                 agg_product.get_name() == "Test" and agg_product.get_quantity() == 2))
+aggregation_results.append(check("Product still knows its supplier",
+                                 agg_product.get_supplier() is agg_supplier))
+
+# Transfer to Inventory B
+inventory_b.add_product(agg_product)
+aggregation_results.append(check("Same Product object can be added to Inventory B",
+                                 inventory_b.find_product("20") is agg_product))
+
+# Empty Inventory B
+inventory_b.remove_product("20")
+aggregation_results.append(check("Inventory B is now empty",
+                                 len(inventory_b.get_products()) == 0))
+aggregation_results.append(check("Product still exists after its inventory is emptied",
+                                 agg_product.get_name() == "Test"))
+
+print(f"{sum(aggregation_results)} of {len(aggregation_results)} checks passed")
