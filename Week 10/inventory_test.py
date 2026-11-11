@@ -166,3 +166,36 @@ composition_results.append(check("Product still exists after its OrderLine was r
 composition_results.append(check("Order 2 is unaffected by changes to Order 1", order_2.calculate_total() == 10.0))
 
 print(f"{sum(composition_results)} of {len(composition_results)} checks passed")
+
+# ----- TEST LSP (SUBSTITUTABILITY) -----
+print("\n----- TEST LSP (SUBSTITUTABILITY) -----")
+lsp_results = []
+
+def show_product_details(product: Product) -> None:
+    """Works on ANY Product, using only what Product promises."""
+    product.display_information()
+    print(product.get_fulfilment_info())
+
+lsp_supplier = Supplier("S005", "Foxtrot Ltd", "team@foxtrot.com")
+lsp_physical = PhysicalProduct("40", "LSP Mouse", 10.0, 5, 0.3, lsp_supplier)
+lsp_digital = DigitalProduct("41", "LSP Ebook", 5.0, 5, 2.0, lsp_supplier)
+
+# The same function, unchanged, with both subclasses
+for item in (lsp_physical, lsp_digital):
+    try:
+        show_product_details(item)
+        lsp_results.append(check(f"show_product_details works with {type(item).__name__}", True))
+    except Exception:
+        lsp_results.append(check(f"show_product_details works with {type(item).__name__}", False))
+
+# Both subclasses work in an Inventory through its normal operations
+lsp_inventory = Inventory()
+lsp_inventory.add_product(lsp_physical)
+lsp_inventory.add_product(lsp_digital)
+
+lsp_results.append(check("Inventory finds the physical product", lsp_inventory.find_product("40") is lsp_physical))
+lsp_results.append(check("Inventory finds the digital product", lsp_inventory.find_product("41") is lsp_digital))
+print("display_all():")
+lsp_inventory.display_all()
+
+# The expectation Product sets: update_stock(n) makes get_quantity() return
