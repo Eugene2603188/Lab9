@@ -207,6 +207,66 @@ class Inventory:
         """Return the list of all products."""
         return self.__products
 
+class OrderLine:
+    """One product and quantity inside an Order.
+    Only an Order should create it (composition: it belongs to exactly one Order)."""
+
+    def __init__(self, product: Product, quantity: int) -> None:
+        self.__product: Product = product      # reference only, OrderLine does not own the Product
+        self.__quantity: int = quantity
+
+    def get_product(self) -> Product:
+        return self.__product
+
+    def get_quantity(self) -> int:
+        return self.__quantity
+
+    def calculate_subtotal(self) -> float:
+        return self.__product.get_price() * self.__quantity
+
+    def display_information(self) -> None:
+        print(f"{self.__product.get_name():<15} | "
+              f"Qty: {self.__quantity:>3} | "
+              f"Unit: ${self.__product.get_price():>8.2f} | "
+              f"Subtotal: ${self.calculate_subtotal():>8.2f}")
+
+
+class Order:
+    """A customer order. Creates and manages its own OrderLine objects (composition)."""
+
+    def __init__(self, order_id: str) -> None:
+        self.__order_id: str = str(order_id)
+        self.__order_lines: list[OrderLine] = []
+
+    def get_order_id(self) -> str:
+        return self.__order_id
+
+    def add_order_line(self, product: Product, quantity: int) -> None:
+        """Takes a Product and quantity, and creates the OrderLine internally."""
+        order_line = OrderLine(product, quantity)
+        self.__order_lines.append(order_line)
+
+    def remove_order_line(self, product_id: str) -> bool:
+        """Remove the line for this product from the order. Returns True if removed."""
+        for order_line in self.__order_lines:
+            if order_line.get_product().get_id() == str(product_id):
+                self.__order_lines.remove(order_line)
+                return True
+        return False
+
+    def get_order_lines(self) -> list[OrderLine]:
+        """Return a copy, so outside code cannot add or take lines behind the Order's back."""
+        return list(self.__order_lines)
+
+    def calculate_total(self) -> float:
+        return sum(order_line.calculate_subtotal() for order_line in self.__order_lines)
+
+    def display_information(self) -> None:
+        print(f"Order {self.__order_id}")
+        for order_line in self.__order_lines:
+            order_line.display_information()
+        print(f"Total: ${self.calculate_total():.2f}")
+
 class MainProgram:
     """Displays the menu, gets user input, calls the appropriate Inventory methods."""
 
