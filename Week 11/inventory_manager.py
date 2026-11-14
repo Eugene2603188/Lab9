@@ -729,5 +729,5 @@ if __name__ == "__main__":
 
 #Eugene Repo URL: https://github.com/Eugene2603188/Lab9
 
-#if wanna test, run "inventory_test.py"
+#if wanna test, run: python3 -m unittest discover -s tests -t . -p "*_test.py" -v
 

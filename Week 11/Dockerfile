@@ -2,6 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY inventory_manager.py inventory_test.py inventory.json ./
+COPY inventory_manager.py inventory.json products.csv ./
+COPY tests/ ./tests/
 
 CMD ["python", "inventory_manager.py"]
