@@ -266,12 +266,17 @@ class BulkDiscount(DiscountStrategy):
 class Order:
     """A customer order. Creates and manages its own OrderLine objects (composition)."""
 
-    def __init__(self, order_id: str) -> None:
+    def __init__(self, order_id: str, discount: DiscountStrategy | None = None) -> None:
         self.__order_id: str = str(order_id)
         self.__order_lines: list[OrderLine] = []
+        self.__discount: DiscountStrategy = discount if discount is not None else NoDiscount()
 
     def get_order_id(self) -> str:
         return self.__order_id
+
+    def set_discount(self, discount: DiscountStrategy) -> None:
+        """Swap the discount strategy, e.g. when a customer shows a student card."""
+        self.__discount = discount
 
     def add_order_line(self, product: Product, quantity: int) -> None:
         """Takes a Product and quantity, and creates the OrderLine internally."""
@@ -291,7 +296,8 @@ class Order:
         return list(self.__order_lines)
 
     def calculate_total(self) -> float:
-        return sum(order_line.calculate_subtotal() for order_line in self.__order_lines)
+        total = sum(order_line.calculate_subtotal() for order_line in self.__order_lines)
+        return self.__discount.apply(total)
 
     def display_information(self) -> None:
         print(f"Order {self.__order_id}")
@@ -680,4 +686,3 @@ if __name__ == "__main__":
 #Eugene Repo URL: https://github.com/Eugene2603188/Lab9
 
 #if wanna test, run "inventory_test.py"
-
