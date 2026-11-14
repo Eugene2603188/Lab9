@@ -336,6 +336,18 @@ class Order:
             order_line.display_information()
         print(f"Total: ${self.calculate_total():.2f}")
 
+def get_positive_float(prompt: str) -> float:
+    """Keep asking until the user enters a number greater than zero."""
+    while True:
+        try:
+            value = float(input(prompt))
+            if value <= 0:
+                print("Please enter a number greater than zero.")
+                continue
+            return value
+        except ValueError:
+            print("Please enter a valid number, e.g. 12.50")
+
 class MainProgram:
     """Displays the menu, gets user input, calls the appropriate Inventory methods."""
 
@@ -409,22 +421,14 @@ class MainProgram:
                         return
 
                 break
-            except:
+            except ValueError:
                 print("Invalid input. Please enter a valid product ID.")
 
         # INPUT 2: Get Product Name
         product_name = input("Product Name: ").strip()
 
         # INPUT 3: Get and validate Price - must be a number, not negative
-        while True:
-            try:
-                price = float(input("Price: ").strip())
-                if price <= 0:
-                    print("Price must be greater than 0. Please enter a valid price.")
-                    continue
-                break
-            except ValueError:
-                print("Invalid input. Please enter a valid price (e.g., 9.99)")
+        price = get_positive_float("Price: ")
 
         # INPUT 4: Choose product type
         while True:
