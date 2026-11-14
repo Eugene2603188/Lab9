@@ -263,6 +263,12 @@ class BulkDiscount(DiscountStrategy):
             return total - self.__amount
         return total
 
+class StudentDiscount(DiscountStrategy):
+    """5% off for students (the business request from Section 2.1)."""
+
+    def apply(self, total: float) -> float:
+        return total * 0.95
+
 class Order:
     """A customer order. Creates and manages its own OrderLine objects (composition)."""
 
@@ -686,3 +692,4 @@ if __name__ == "__main__":
 #Eugene Repo URL: https://github.com/Eugene2603188/Lab9
 
 #if wanna test, run "inventory_test.py"
+
