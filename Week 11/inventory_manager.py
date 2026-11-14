@@ -140,6 +140,23 @@ class SubscriptionProduct(Product):
         return (super().get_info_string() +
                 f" | Type: {'Sub':<8} | Duration: {self.get_duration_months():>3} mos")
 
+class ProductFactory:
+    """Centralises product creation. The rest of the program only needs Product and this class."""
+
+    @staticmethod
+    def create(product_type: str, product_id: str, name: str, price: float,
+               stock_quantity: int, supplier: Supplier, extra: float = 0) -> Product:
+        """extra is the type-specific value: weight (physical), download size (digital)
+        or duration in months (subscription)."""
+        if product_type == "physical":
+            return PhysicalProduct(product_id, name, price, stock_quantity, extra, supplier)
+        elif product_type == "digital":
+            return DigitalProduct(product_id, name, price, stock_quantity, extra, supplier)
+        elif product_type == "subscription":
+            return SubscriptionProduct(product_id, name, price, stock_quantity, int(extra), supplier)
+        else:
+            raise ValueError(f"Unknown product type: {product_type}")
+
 class Inventory:
     """Manages a collection of products in the inventory (aggregation)."""
 
@@ -416,8 +433,8 @@ class MainProgram:
         if product_type == "1":
             while True:
                 try:
-                    weight = float(input("Weight (kg): ").strip())
-                    if weight <= 0:
+                    extra = float(input("Weight (kg): ").strip())
+                    if extra <= 0:
                         print("Weight must be greater than 0.")
                         continue
                     break
@@ -426,8 +443,8 @@ class MainProgram:
         elif product_type == "2":
             while True:
                 try:
-                    download_size = float(input("Download size (MB): ").strip())
-                    if download_size <= 0:
+                    extra = float(input("Download size (MB): ").strip())
+                    if extra <= 0:
                         print("Download size must be greater than 0.")
                         continue
                     break
@@ -436,8 +453,8 @@ class MainProgram:
         else:
             while True:
                 try:
-                    duration_months = int(input("Duration (months): ").strip())
-                    if duration_months <= 0:
+                    extra = int(input("Duration (months): ").strip()) 
+                    if extra <= 0:
                         print("Duration must be greater than 0.")
                         continue
                     break
@@ -477,13 +494,9 @@ class MainProgram:
                 print(f"Current stock: {current_total} | Max allowed: 500 | Available space: {500 - current_total}")
                 continue
 
-            # Create the matching subclass object and pass it to Inventory
-            if product_type == "1":
-                product = PhysicalProduct(product_id, product_name, price, valid_quantity, weight, supplier)
-            elif product_type == "2":
-                product = DigitalProduct(product_id, product_name, price, valid_quantity, download_size, supplier)
-            else:
-                product = SubscriptionProduct(product_id, product_name, price, valid_quantity, duration_months, supplier)
+            # Ask the factory to create the right product type
+            type_names = {"1": "physical", "2": "digital", "3": "subscription"}
+            product = ProductFactory.create(type_names[product_type], product_id, product_name, price, valid_quantity, supplier, extra)
             self.inventory.add_product(product)
             print(f"Product P{product_id} added successfully.")
             break
@@ -651,23 +664,10 @@ class FileHandling:
 
         for item in data:
             supplier = self._load_supplier(item.get("supplier"), suppliers)
-            prod_type = item.get("type")
-            product: Product
-            if prod_type == "digital":
-                product = DigitalProduct(
-                    item.get("product_id", item.get("id")), item["name"], item["price"],
-                    item["quantity"], item["download_size"], supplier
-                )
-            elif prod_type == "subscription":
-                product = SubscriptionProduct(
-                    item.get("product_id", item.get("id")), item["name"], item["price"],
-                    item["quantity"], item["duration_months"], supplier
-                )
-            else:
-                product = PhysicalProduct(
-                    item.get("product_id", item.get("id")), item["name"], item["price"],
-                    item["quantity"], item.get("weight", 0), supplier
-                )
+            prod_type = item.get("type", "physical")
+            extra_keys = {"physical": "weight", "digital": "download_size", "subscription": "duration_months"}
+            extra = item.get(extra_keys.get(prod_type, ""), 0)
+            product = ProductFactory.create(prod_type, item.get("product_id", item.get("id")), item["name"], item["price"], item["quantity"], supplier, extra)
             inventory.add_product(product)
 
     def _load_supplier(self, supplier_data: dict | None,
@@ -692,4 +692,3 @@ if __name__ == "__main__":
 #Eugene Repo URL: https://github.com/Eugene2603188/Lab9
 
 #if wanna test, run "inventory_test.py"
-
