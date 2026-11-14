@@ -46,6 +46,10 @@ class Product(ABC):
     
     def __init__(self, product_id: str, name: str, price: float, quantity: int, supplier: Supplier) -> None:
         """Constructor - initialize a product with its attributes."""
+        if price <= 0:
+            raise ValueError("Price must be greater than zero.")
+        if quantity < 0:
+            raise ValueError("Stock quantity cannot be negative.")
         self.__product_id: str = str(product_id)
         self.__name: str = name
         self.__price: float = price
@@ -54,6 +58,8 @@ class Product(ABC):
     
     def update_stock(self, new_quantity: int) -> None:
         """Update the stock quantity for this product."""
+        if new_quantity < 0:
+            raise ValueError("Stock quantity cannot be negative.")
         self.__quantity = new_quantity
 
     def display_single_line(self) -> None:
@@ -225,7 +231,9 @@ class OrderLine:
     Only an Order should create it (composition: it belongs to exactly one Order)."""
 
     def __init__(self, product: Product, quantity: int) -> None:
-        self.__product: Product = product      # reference only, OrderLine does not own the Product
+        if quantity <= 0:
+            raise ValueError("Quantity must be greater than zero.")
+        self.__product: Product = product      
         self.__quantity: int = quantity
 
     def get_product(self) -> Product:
@@ -411,8 +419,8 @@ class MainProgram:
         while True:
             try:
                 price = float(input("Price: ").strip())
-                if price < 0:
-                    print("Price cannot be negative. Please enter a valid price.")
+                if price <= 0:
+                    print("Price must be greater than 0. Please enter a valid price.")
                     continue
                 break
             except ValueError:
