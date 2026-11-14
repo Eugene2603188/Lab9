@@ -1,6 +1,8 @@
 from __future__ import annotations
 import json
 import os
+import csv
+import json
 
 from abc import ABC, abstractmethod
 
@@ -347,6 +349,30 @@ def get_positive_float(prompt: str) -> float:
             return value
         except ValueError:
             print("Please enter a valid number, e.g. 12.50")
+
+def load_products(path: str, inventory: Inventory, supplier: Supplier) -> None:
+    """Load products from a CSV file. Bad rows are reported and skipped."""
+    loaded = 0
+    try:
+        file = open(path, newline="")
+    except FileNotFoundError:
+        print(f"Products file not found: {path}")
+    else:
+        with file:
+            reader = csv.reader(file)
+            next(reader, None)  # skip the header row
+            for row in reader:
+                try:
+                    product_type, product_id, name, price, stock_quantity = row
+                    product = ProductFactory.create(product_type, product_id, name,
+                                                    float(price), int(stock_quantity), supplier)
+                    inventory.add_product(product)
+                    loaded += 1
+                except ValueError as error:
+                    print(f"Skipping row {row}: {error}")
+        print(f"{loaded} products loaded.")
+    finally:
+        print("Load attempt finished.")
 
 class MainProgram:
     """Displays the menu, gets user input, calls the appropriate Inventory methods."""
@@ -704,3 +730,4 @@ if __name__ == "__main__":
 #Eugene Repo URL: https://github.com/Eugene2603188/Lab9
 
 #if wanna test, run "inventory_test.py"
+
