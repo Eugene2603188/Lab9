@@ -1,0 +1,377 @@
+commit b5457045b6d455e37a003ead75bb6ec73d0fbd42
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 18:25:06 2026 +0800
+
+    Added polymorphism test through Product collection
+
+commit 9c9456c14ff5cbc3abd62710d1b3e4aa0e99ad31
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 18:23:51 2026 +0800
+
+    Added LSP test show_product_details()
+
+commit 12f6bf3a4d1594cf11e62ff66506c691a951c028
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 18:22:17 2026 +0800
+
+    Added type hints to all classes
+
+commit b01b538c8c1c6cef87e3e3401aefa181133658b5
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 18:00:24 2026 +0800
+
+    Added composition test for Order and OrderLine
+
+commit 7eddcdee60530e71c88597d28a70956b198c47eb
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 17:58:15 2026 +0800
+
+    Added OrderLine and Order classes
+
+commit b3061f81ee02858780838a659242fe52ff33b55d
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 17:47:21 2026 +0800
+
+    Added aggregation test, product moves between inventories
+
+commit 370401397cf97fdb4111c253e4bfdc8f08c60fbb
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 17:43:58 2026 +0800
+
+    Inventory typed as list[Product], added remove_product() and find_product()
+
+commit 0e18e05d89d3091aa1f1165e6a0caa6edbe3ca72
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 17:34:42 2026 +0800
+
+    Added test for supplier and product
+
+commit 63d3b5efa17b187a55f06230390e857d44c3cecf
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 17:20:55 2026 +0800
+
+    Supplier will be saved and loaded in inventory.json + will also be asked for in the add_product
+
+commit 36a2818d215148d131faf75315e74faa5389c6d8
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 16:54:15 2026 +0800
+
+    Product now accepts supplier object
+
+commit a3a6983373e3f2680ba82cc5a21a8a5043dd7071
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 16:53:45 2026 +0800
+
+    Product now accepts supplier object
+
+commit e7c80bbaead65a183720f7a1ef785de4a12403c0
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Wed Nov 11 16:49:48 2026 +0800
+
+    Added Supplier class
+
+commit 6b5a2291892dd913bcf4faffdb77202e02dc91c4
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Sun Nov 1 04:19:35 2026 +0800
+
+    SubscriptionProduct class works
+
+commit d83dea31f9d378751efcfed508bf69e411b317a3
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Sun Nov 1 04:10:17 2026 +0800
+
+    add shipping cose menu option
+
+commit 005a8ed6c3dd3435f8debf20c42814757a3ce02a
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Sat Oct 31 16:58:31 2026 +0800
+
+    fix file inventory.json directory issue
+
+commit c176e1cdd8f94bacfcc424b1242ad3332bc6a400
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Sat Oct 31 16:39:15 2026 +0800
+
+    Added .gitignore and Dockerfile
+
+commit 76d1d969d0e292837e1b21a3732167f09194fd3d
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Sat Oct 31 16:33:51 2026 +0800
+
+    Added test for product check, canbeship() and fulfilment msg, also added canbeship() in inventory_manager() and improve outpput visibility
+
+commit 709867aff91efbc18cdb5dd401c5bda8fa7e77a1
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Oct 30 18:12:49 2026 +0800
+
+    change week9/inventory.json
+
+commit 242730ebc4de06399fa0522bac7d5a54bd0ad087
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Oct 30 18:09:31 2026 +0800
+
+    file handling saves/loads a type key in JSON
+
+commit 7a125e35613ed531cf15f1b9b2856351c5ffe4f9
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Oct 30 17:46:38 2026 +0800
+
+    handle_add_product works with digital and physical product
+
+commit 883b25fb0c35d746a88099fe369adaa212c93ea2
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Oct 30 17:40:49 2026 +0800
+
+    Made Inventory accepts product
+
+commit a873823930954e9ff998de42ce8133942eb5f0be
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Oct 30 17:38:59 2026 +0800
+
+    Made PhysicalProduct
+
+commit a4421b2f98ae5d981fa88a09c674496a7e81369b
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Oct 30 17:37:36 2026 +0800
+
+    Made DigitalProduct
+
+commit f236f19c4fa52ecc4fab7cc43cd5e5c73392059f
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Oct 30 17:33:53 2026 +0800
+
+    Made Product Abstract
+
+commit cc582d41dbc48e7e033bf26f1aa575cc84450a2f
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 19:58:48 2026 +0800
+
+    Make sure menu looks like week 5 lab + added add function to check for same id because if not search will show diff product with same id
+
+commit 871dbcb36ec1ae749d030cb1bd43926ca4fb109c
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 19:43:02 2026 +0800
+
+    Added Class for File Handling as per lab worksheet instruction cuz i bodoh and nvr read
+
+commit 329a77e4a32c781ce3bfae8ddc46663c6b407c1d
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 19:38:22 2026 +0800
+
+    Added Class for Main Program as per lab worksheet instruction cuz i bodoh and nvr read
+
+commit 9318276771095126acf7bc6daf465d1d4fab9297
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 19:29:44 2026 +0800
+
+    Improve Input Options
+
+commit 2589f68b73ae2aedb60d5ab20949d8ee9de036b0
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 18:41:40 2026 +0800
+
+    Remove useless variables from week 5
+
+commit 87a6bd1d5a877273a71c8a87ac525f0f25fd98dc
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 18:32:58 2026 +0800
+
+    Remove get_next_id() cuz user gonna ownself input id
+
+commit ea3ede60a0538f34fa69049e3e0c380b70a056f3
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 18:27:57 2026 +0800
+
+    Refactor 500 max quantity
+
+commit bc1cc3e4790f2c56766267b5504c23cdb2f7986f
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 18:20:59 2026 +0800
+
+    Refactor update function
+
+commit fa06809e153bd25880e54733c67ec547b4f873cd
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 18:14:27 2026 +0800
+
+    Refactor Search function 2.0
+
+commit 0cc76bc642880afc237864f06ae77edf40def5c3
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 18:12:14 2026 +0800
+
+    Refactor Search function
+
+commit 3eae574c2f5c1d3cf7d4643281962f1d00de0591
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 17:37:47 2026 +0800
+
+    Refactor Menu option for saving inventory and exiting the menu
+
+commit 4ae56000e03eb809a4afd8f4148c19b7f5e30e70
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 17:32:05 2026 +0800
+
+    Refactor getting/saving data from JSON to product object 2.0
+
+commit 62c0b4c51a758d4037a18ce0dc16241a8343a173
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 17:31:44 2026 +0800
+
+    Refactor getting/saving data from JSON to product object
+
+commit b83b9f23b4fa6d22b2f8c1f634dae40bd7c1a744
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 17:08:24 2026 +0800
+
+    Inventory Class created
+
+commit dc8f3e2a358f1b9933aac06d276e129d8f180de9
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Mon Oct 26 17:02:12 2026 +0800
+
+    Product Class created
+
+commit 5d0a55222f71181eb5c716ae50f1f89f71fc88d8
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Sep 25 22:33:41 2026 +0800
+
+    Text formatting in terminal fixed
+
+commit f3ed615a1805e1e8aad993c2cfd5e1251476b163
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Sep 25 22:30:06 2026 +0800
+
+    made the quantity max at 500, renamed previous function name to check_quantity_max()
+
+commit bd01c1be22ec24068250de255533b1e438a1e638
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Sep 25 22:23:24 2026 +0800
+
+    Load_Inventory() works
+
+commit 3a2bc870674408378b49fa3efc41572fe573e08e
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Sep 25 22:17:50 2026 +0800
+
+    Writeback and Save_inventory() works
+
+commit 9d367c1d3a0f9f42d08768d02b78ba11a9247929
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Sep 25 22:01:11 2026 +0800
+
+    fixed get_valid_input to suit the new inputs as shown in the assinment
+
+commit ac7948d3c591e3f307bb36ca8320972bce5085d5
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Sep 25 21:49:46 2026 +0800
+
+    fixed list of items printing issue
+
+commit 099fee9ecc4c47942b7dbe4ec99fd533faa18937
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Sep 25 21:45:43 2026 +0800
+
+    Connecting to inventory.txt fixed
+
+commit 89db22d1521b87eff996e8795f57c142b1ead5d1
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Sep 25 21:16:53 2026 +0800
+
+    History Tracking done, history supposed to be array not inventory
+
+commit 59f44a2c63f4f3747af7560ac134155866d1d3c3
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Sep 25 21:09:33 2026 +0800
+
+    Persistence Improved, Inventory is now array
+
+commit 3e9102d58f82111facacd02ee45b1718149e7e23
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Fri Sep 25 20:55:38 2026 +0800
+
+    Persistence Completed
+
+commit cc9f7cda535468ff7e7f2f445f2bc2523296e9c5
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Tue Sep 22 15:04:49 2026 +0800
+
+    “done”
+
+commit c683432d98d0af6a247bcbce734ef7e7d6a2749a
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Tue Sep 22 14:48:43 2026 +0800
+
+    Activity 5
+
+commit 4cceea18ab8bbebec8decb4d980481a5e275910e
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Tue Sep 22 14:48:27 2026 +0800
+
+    Activity 4
+
+commit 2ec0684f16af3a98f944739c8b9a68a4fca75134
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Tue Sep 22 14:46:52 2026 +0800
+
+    Activity 3
+
+commit 247dffcd86660bc5e0dc3c79437f506b30854240
+Author: Eugene <2603188@sit.singaporetech.edu.sg>
+Date:   Tue Sep 22 14:38:13 2026 +0800
+
+    First Post
+
+commit d073310af41e5f75f8defde4860165c9a31b2a49
+Author: Eugene <eugeneong0210@gmail.com>
+Date:   Sat Sep 19 15:42:44 2026 +0800
+
+    Updated auditor script
+
+commit 3adbfbe5d982197c8b5475036e37a313541067c4
+Author: Eugene <eugeneong0210@gmail.com>
+Date:   Fri Sep 18 17:52:06 2026 +0800
+
+    lesson 3 part 4
+
+commit 75f63b8ec91ad51ec66fa807d52b705e9d34521d
+Author: Eugene <eugeneong0210@gmail.com>
+Date:   Fri Sep 18 17:51:00 2026 +0800
+
+    I forgot to log until lesson 3 part 4
+
+commit f4115f858e66d94cc554ad709707711c332ebdd8
+Author: Eugene <eugeneong0210@gmail.com>
+Date:   Fri Sep 11 17:21:44 2026 +0800
+
+    first commit
+
+commit 18bae0e00cbd8f72b73b523884359c2bdb1adefa
+Author: Eugene <eugeneong0210@gmail.com>
+Date:   Fri Sep 4 16:48:46 2026 +0800
+
+    All 5 Activities Submission
+
+commit a9d5013ee09314859b6eeba1d3a218b14955eb30
+Author: Eugene <eugeneong0210@gmail.com>
+Date:   Fri Sep 4 16:44:56 2026 +0800
+
+    interactve profile
+
+commit bab4c5d212f0e001e1a9992364417ba25b9d52d8
+Author: Eugene <eugeneong0210@gmail.com>
+Date:   Fri Sep 4 16:40:16 2026 +0800
+
+    followers
+
+commit 725ad00f385f3fb608927b9eb4c6fd0d55874ef4
+Author: Eugene <eugeneong0210@gmail.com>
+Date:   Fri Sep 4 16:38:43 2026 +0800
+
+    username
+
+commit 98af579bf5f979a8a43593ac34d8924d8fafa158
+Author: Eugene <eugeneong0210@gmail.com>
+Date:   Fri Sep 4 16:34:25 2026 +0800
+
+    First Post
